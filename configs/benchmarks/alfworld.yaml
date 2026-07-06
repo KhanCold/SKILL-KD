@@ -1,0 +1,51 @@
+name: alfworld
+task_type: embodied_text_game
+homepage: https://github.com/alfworld/alfworld
+
+setup:
+  python_extra: alfworld
+  data_root: data/alfworld
+  initial_skill_path: configs/skills/alfworld/initial_skill.md
+  external_repo: null
+  raw_data: data/alfworld/raw
+
+# Pinned splits from data/alfworld/splits/ (39 train, 18 val, 134 test).
+# Each manifest lists specific game paths to load from raw/json_2.1.1/.
+splits:
+  train:
+    source: raw/json_2.1.1/train
+    manifest: data/alfworld/splits/train/items.json
+  test_seen:
+    source: raw/json_2.1.1/valid_seen
+    manifest: data/alfworld/splits/val/items.json
+  test_unseen:
+    source: raw/json_2.1.1/valid_unseen
+    manifest: data/alfworld/splits/test/items.json
+
+evaluation_splits:
+  - test_unseen
+
+task_sampling:
+  strategy: stratified_proportional
+  seed: 42
+  task_type_prefixes:
+    - look_at_obj_in_light
+    - pick_and_place_with_movable_recep
+    - pick_and_place_simple
+    - pick_clean_then_place_in_recep
+    - pick_cool_then_place_in_recep
+    - pick_heat_then_place_in_recep
+    - pick_two_obj_and_place
+
+environment:
+  observation_mode: text
+  action_space: admissible_commands
+  success_signal: environment_done
+  max_rollout_steps: 50
+
+metrics:
+  primary: success_rate
+  secondary:
+    - average_steps_to_success
+    - invalid_action_rate
+    - patch_rounds_to_success

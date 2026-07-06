@@ -1,0 +1,41 @@
+name: spreadsheetbench
+task_type: spreadsheet_reasoning
+homepage: https://github.com/RUCKBReasoning/SpreadsheetBench
+
+setup:
+  data_root: data/spreadsheetbench
+  initial_skill_path: configs/skills/spreadsheetbench/initial_skill.md
+  external_repo: external/SpreadsheetBench
+  raw_data: data/spreadsheetbench/raw
+
+# Pinned splits from data/spreadsheetbench/splits/ (80 train, 40 val, 280 test)
+# drawn from the Verified-400 subset of the full 912-row dataset.
+# val (40) is materialised on disk but intentionally excluded from the yaml.
+stratify_by: instruction_type
+sampling_seed: 42
+
+splits:
+  train:
+    source: train
+    split_file: data/spreadsheetbench/train.jsonl
+  test:
+    source: test
+    split_file: data/spreadsheetbench/test.jsonl
+
+environment:
+  file_formats:
+    - xlsx
+    - csv
+  tool_access:
+    - python
+    - pandas
+    - openpyxl
+  success_signal: exact_or_normalized_answer_match
+  max_rollout_steps: 20
+
+metrics:
+  primary: answer_accuracy
+  secondary:
+    - execution_success_rate
+    - formula_error_rate
+    - patch_rounds_to_success

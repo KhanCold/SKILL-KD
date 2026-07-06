@@ -1,0 +1,42 @@
+name: docvqa
+task_type: visual_document_qa
+homepage: https://huggingface.co/datasets/lmms-lab/DocVQA
+
+setup:
+  data_root: data/docvqa
+  image_root: data/docvqa_images
+  initial_skill_path: configs/skills/docvqa/initial_skill.md
+  hf_dataset: lmms-lab/DocVQA
+  hf_revision: 539088ef8a8ada01ac8e2e6d4e372586748a265e
+  hf_config: DocVQA
+  hf_split: validation
+  image_detail: auto
+
+# Pinned splits from data/docvqa/splits/ (107 train, 53 val, 374 test).
+# val (53) is materialised on disk but intentionally excluded from the yaml.
+stratify_by: task_type
+sampling_seed: 42
+
+splits:
+  train:
+    source: train
+    split_file: data/docvqa/train.jsonl
+  test:
+    source: test
+    split_file: data/docvqa/test.jsonl
+
+task_sampling:
+  train_tasks_per_epoch: 107
+  eval_tasks_per_split: 374
+
+environment:
+  output_format: <answer>span</answer>
+  tool_access: []
+  success_signal: anls_near_exact
+  max_rollout_steps: 1
+
+metrics:
+  primary: anls
+  secondary:
+    - hard_exact_match
+

@@ -1,0 +1,38 @@
+name: searchqa
+task_type: open_domain_question_answering
+homepage: https://huggingface.co/datasets/lucadiliello/searchqa
+
+setup:
+  data_root: data/searchqa
+  initial_skill_path: configs/skills/searchqa/initial_skill.md
+  hf_dataset: lucadiliello/searchqa
+
+# Pinned splits from data/searchqa/splits/ (400 train, 200 val, 1400 test).
+# val (200) is materialised on disk but intentionally excluded from the yaml so
+# experiments stay a clean train/test pair.
+sampling_seed: 42
+
+splits:
+  train:
+    source: train
+    split_file: data/searchqa/train.jsonl
+  test:
+    source: test
+    split_file: data/searchqa/test.jsonl
+
+task_sampling:
+  train_tasks_per_epoch: 400
+  eval_tasks_per_split: 1400
+
+environment:
+  context_max_chars: 6000
+  tool_access: []
+  success_signal: squad_em
+  max_rollout_steps: 1
+
+metrics:
+  primary: exact_match
+  secondary:
+    - token_f1
+    - substring_em
+

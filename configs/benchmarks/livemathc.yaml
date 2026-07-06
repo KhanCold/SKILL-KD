@@ -1,0 +1,47 @@
+name: livemathc
+task_type: math_multiple_choice
+homepage: https://huggingface.co/datasets/LiveMathematicianBench/LiveMathematicianBench
+
+setup:
+  data_root: data/livemathc
+  initial_skill_path: configs/skills/livemathc/initial_skill.md
+  hf_dataset: LiveMathematicianBench/LiveMathematicianBench
+  hf_revision: b72450f6ce96c26158d64d945a5d31ef7727be41
+  months:
+    - "202511"
+    - "202512"
+    - "202601"
+    - "202602"
+  shuffle_choices: true
+  choice_shuffle_seed: 42
+
+# Pinned splits from data/livemathc/splits/ (35 train, 18 val, 124 test).
+# val (18) is materialised on disk but intentionally excluded from the yaml.
+stratify_by: theorem_type_primary
+sampling_seed: 42
+
+splits:
+  train:
+    source: train
+    split_file: data/livemathc/train.jsonl
+  test:
+    source: test
+    split_file: data/livemathc/test.jsonl
+
+task_sampling:
+  train_tasks_per_epoch: 35
+  eval_tasks_per_split: 124
+  split_ratio: "2:1:7"
+  split_seed: 42
+
+environment:
+  output_format: <answer>LABEL</answer>
+  tool_access: []
+  success_signal: exact_label_match
+  max_rollout_steps: 1
+
+metrics:
+  primary: accuracy
+  secondary:
+    - per_theorem_type_accuracy
+

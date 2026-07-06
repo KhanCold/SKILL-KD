@@ -1,0 +1,41 @@
+[project]
+name = "skill-kd"
+version = "0.1.0"
+description = "SKILL-KD: Contrastive Skill Distillation for LLM Agents"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+dependencies = [
+  "datasets>=2.19.0,<4.0.0",
+  "huggingface-hub>=0.23.0",
+  "numpy>=1.26.0",
+  "openai>=1.35.0",
+  "openpyxl>=3.1.2",
+  "pandas>=2.2.0",
+  "pyyaml>=6.0.1",
+  "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+alfworld = [
+  "alfworld>=0.3.5",
+  "spacy<3.8",
+]
+dev = [
+  "pytest>=8.2.0",
+]
+
+[project.scripts]
+skill-kd-run = "pact.run_experiment:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
