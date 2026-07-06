@@ -58,21 +58,21 @@ class LLMConfig:
     model: str
     base_url: str | None = None
     api_key_env: str = "DASHSCOPE_API_KEY"
-    # Per-request timeout in seconds. Overridable via env PACT_LLM_TIMEOUT.
+    # Per-request timeout in seconds. Overridable via env SKILL_KD_LLM_TIMEOUT.
     # 600s gives enough headroom for vLLM queue stalls under heavy concurrent
     # load (e.g. LiveMathC with 12 workers on a saturated GPU). Transient
     # timeout handling is implemented by LLMClient._call_with_retry below.
-    timeout: float = float(os.environ.get("PACT_LLM_TIMEOUT", "600"))
+    timeout: float = float(os.environ.get("SKILL_KD_LLM_TIMEOUT", "600"))
     # Auto-retries on transient errors. Overridable via env
-    # PACT_LLM_MAX_RETRIES. This is the number of retries after the first
+    # SKILL_KD_LLM_MAX_RETRIES. This is the number of retries after the first
     # failed attempt, so 10 means at most 11 total attempts.
-    max_retries: int = int(os.environ.get("PACT_LLM_MAX_RETRIES", "10"))
-    retry_base_delay: float = float(os.environ.get("PACT_LLM_RETRY_BASE_DELAY", "1"))
-    retry_max_delay: float = float(os.environ.get("PACT_LLM_RETRY_MAX_DELAY", "60"))
+    max_retries: int = int(os.environ.get("SKILL_KD_LLM_MAX_RETRIES", "10"))
+    retry_base_delay: float = float(os.environ.get("SKILL_KD_LLM_RETRY_BASE_DELAY", "1"))
+    retry_max_delay: float = float(os.environ.get("SKILL_KD_LLM_RETRY_MAX_DELAY", "60"))
     # For Qwen3+ family on DashScope. Default OFF: thinking mode adds 30-100s
     # per call and breaks `tool_choice="required"`. Enable per-call via the
     # `enable_thinking=True` keyword on complete/chat/chat_raw if you need it.
-    enable_thinking: bool = bool(int(os.environ.get("PACT_ENABLE_THINKING", "0")))
+    enable_thinking: bool = bool(int(os.environ.get("SKILL_KD_ENABLE_THINKING", "0")))
 
 
 class LLMClient:
@@ -81,7 +81,7 @@ class LLMClient:
         api_key = os.environ.get(config.api_key_env)
         base_url = (
             config.base_url
-            or os.environ.get("PACT_BASE_URL")
+            or os.environ.get("SKILL_KD_BASE_URL")
             or os.environ.get("OPENAI_BASE_URL")
             or os.environ.get("DASHSCOPE_BASE_URL")
             or "https://dashscope.aliyuncs.com/compatible-mode/v1"

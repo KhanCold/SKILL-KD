@@ -787,11 +787,11 @@ def evaluate_split(
     total = len(tasks)
 
     # Per-split worker count. Default 8 = parallel by default; set
-    # PACT_EVAL_WORKERS=1 to fall back to fully serial. ALFWorld is
+    # SKILL_KD_EVAL_WORKERS=1 to fall back to fully serial. ALFWorld is
     # force-serialized regardless because `textworld.gym.register_games`
     # (alfworld_official.py:43-72) mutates a global Gym registry and is
     # not thread-safe.
-    workers_env = max(1, int(os.environ.get("PACT_EVAL_WORKERS", "8")))
+    workers_env = max(1, int(os.environ.get("SKILL_KD_EVAL_WORKERS", "8")))
     workers = min(workers_env, total) if total else 1
     if adapter.name == "alfworld" and workers > 1:
         print(
@@ -1205,7 +1205,7 @@ def safe_id(task: dict[str, Any]) -> str:
 def make_llm_clients(args: argparse.Namespace) -> tuple[Any, Any | None, Any | None]:
     base_url = (
         args.base_url
-        or os.environ.get("PACT_BASE_URL")
+        or os.environ.get("SKILL_KD_BASE_URL")
         or os.environ.get("OPENAI_BASE_URL")
         or os.environ.get("DASHSCOPE_BASE_URL")
     )
@@ -1241,7 +1241,7 @@ def main() -> None:
     parser.add_argument("--benchmarks", nargs="+", default=None)
     parser.add_argument("--train-limit", type=int, default=None)
     parser.add_argument("--eval-limit", type=int, default=None)
-    parser.add_argument("--max-iters", type=int, default=int(os.environ.get("PACT_MAX_ITERS", "3")))
+    parser.add_argument("--max-iters", type=int, default=int(os.environ.get("SKILL_KD_MAX_ITERS", "3")))
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--student-model", default="qwen3-8b")
     parser.add_argument("--teacher-model", default=None,
@@ -1251,7 +1251,7 @@ def main() -> None:
                         help="Base URL for student model. Falls back to --base-url if not set.")
     parser.add_argument("--teacher-base-url", default=None,
                         help="Base URL for teacher/critic model. Falls back to --base-url if not set.")
-    parser.add_argument("--api-key-env", default=os.environ.get("PACT_API_KEY_ENV", "DASHSCOPE_API_KEY"))
+    parser.add_argument("--api-key-env", default=os.environ.get("SKILL_KD_API_KEY_ENV", "DASHSCOPE_API_KEY"))
     parser.add_argument(
         "--skip-self-evolution-if-teacher-fails",
         action="store_true",
@@ -1280,7 +1280,7 @@ def main() -> None:
     elif args.student_model:
         prefix = f"{sanitize_run_name(args.student_model)}_"
     else:
-        prefix = "pact_"
+        prefix = "skill_kd_"
     default_run_id = f"{prefix}{ts}"
     run_id = args.run_id or default_run_id
 

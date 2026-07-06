@@ -145,7 +145,7 @@ def evaluate(pred_path: str, gold_path: str,
     }
 
 
-# ---------- PACT-specific: code extraction, execution, recalc ----------
+# ---------- SKILL-KD-specific: code extraction, execution, recalc ----------
 
 def extract_code(response: str) -> str:
     """Extract the first fenced Python code block from text.

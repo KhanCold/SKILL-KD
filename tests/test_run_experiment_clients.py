@@ -53,3 +53,25 @@ def test_test_mode_initializes_only_student_without_teacher(monkeypatch):
     assert constructed == [
         ("student-model", "https://student.example/v1", "DASHSCOPE_API_KEY")
     ]
+
+
+def test_make_llm_clients_uses_skill_kd_base_url(monkeypatch):
+    constructed = []
+
+    class FakeClient:
+        def __init__(self, config):
+            constructed.append((config.model, config.base_url, config.api_key_env))
+
+    monkeypatch.setenv("SKILL_KD_BASE_URL", "https://skill-kd.example/v1")
+    monkeypatch.setattr(run_experiment, "LLMClient", FakeClient)
+
+    student, teacher, critic = run_experiment.make_llm_clients(
+        _args(base_url=None, student_base_url=None, teacher_base_url=None)
+    )
+
+    assert student is not None
+    assert teacher is critic
+    assert constructed == [
+        ("student-model", "https://skill-kd.example/v1", "DASHSCOPE_API_KEY"),
+        ("critic-model", "https://skill-kd.example/v1", "DASHSCOPE_API_KEY"),
+    ]

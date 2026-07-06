@@ -411,7 +411,7 @@ def run_codegen_multi(
     output_file = f"1_{task_id}_output.xlsx"
 
     # Create isolated work directory
-    work_dir = tempfile.mkdtemp(prefix=f"pact_codegen_{task_id}_")
+    work_dir = tempfile.mkdtemp(prefix=f"skill_kd_codegen_{task_id}_")
     output_path = Path(work_dir) / output_file
 
     try:

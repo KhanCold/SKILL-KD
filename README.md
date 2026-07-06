@@ -18,7 +18,7 @@ cp .env.example .env
 ```
 
 Set `DASHSCOPE_API_KEY` in `.env`, or configure any OpenAI-compatible endpoint
-with `PACT_BASE_URL` and `PACT_API_KEY_ENV`.
+with `SKILL_KD_BASE_URL` and `SKILL_KD_API_KEY_ENV`.
 
 Skip individual benchmark preparation with:
 `SKIP_ALF=1`, `SKIP_SSB=1`, `SKIP_SEARCHQA=1`, `SKIP_LIVEMATHC=1`,
@@ -107,7 +107,3 @@ pytest -q
 ```
 
 Tests mock LLM calls and do not require network access.
-
-## License
-
-Apache-2.0

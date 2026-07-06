@@ -2,7 +2,6 @@
 name = "skill-kd"
 version = "0.1.0"
 description = "SKILL-KD: Contrastive Skill Distillation for LLM Agents"
-license = {text = "Apache-2.0"}
 requires-python = ">=3.9"
 dependencies = [
   "datasets>=2.19.0,<4.0.0",

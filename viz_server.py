@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PACT Results Board — single-file visualization server.
+"""SKILL-KD Results Board — single-file visualization server.
 
 Usage:
     python viz_server.py          # serves on http://localhost:8080
@@ -408,7 +408,7 @@ def scan_group_detail(group_dir: Path):
 def extract_task_info(task_data):
     info = {}
     # Discriminator order matters: structurally-specific shapes first, then the
-    # bare-question fallbacks (wikitq, searchqa) last. Each branch keeps the
+    # bare-question fallback (searchqa) last. Each branch keeps the
     # row dict's foreign fields out of the info payload so the frontend renderer
     # decides what to show per type.
     if "task_type" in task_data and "turk_annotations" in task_data:
@@ -444,10 +444,6 @@ def extract_task_info(task_data):
         # context can be very long; keep a preview for the task summary view.
         ctx = task_data.get("context", "") or ""
         info["context_preview"] = ctx[:400]
-    elif "question" in task_data and "table" in task_data:
-        info["type"] = "wikitq"
-        info["question"] = task_data.get("question", "")
-        info["table_id"] = task_data.get("table_id", "")
     else:
         info["type"] = "unknown"
     return info
@@ -534,7 +530,7 @@ HTML_PAGE = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PACT Results Board</title>
+<title>SKILL-KD Results Board</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@400;600&display=swap');
 
@@ -1156,29 +1152,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* ── WikiTQ specific ── */
-.pred-gold-comp {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--line);
-  margin-top: 8px;
-}
-.pred-gold-comp > div {
-  padding: 10px 14px;
-}
-.pred-gold-comp > div:first-child {
-  border-right: 1px solid var(--line);
-}
-.pred-gold-comp .label {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--fg-secondary);
-  margin-bottom: 4px;
-}
-
 /* ── Code blocks ── */
 .patch-block {
   background: #fafafa;
@@ -1338,10 +1311,6 @@ body {
 .board-table th:nth-child(26), .board-table td:nth-child(26) { min-width: 95px;  } /* ALFWorld Avg */
 .board-table th:nth-child(27), .board-table td:nth-child(27) { min-width: 95px;  } /* ALFWorld Seen */
 .board-table th:nth-child(28), .board-table td:nth-child(28) { min-width: 95px;  } /* ALFWorld Unseen */
-.board-table th:nth-child(29), .board-table td:nth-child(29) { min-width: 105px; } /* WikiTQ Evol */
-.board-table th:nth-child(30), .board-table td:nth-child(30) { min-width: 110px; } /* WikiTQ success */
-.board-table th:nth-child(31), .board-table td:nth-child(31) { min-width: 120px; } /* WikiTQ SR */
-
 .drag-handle {
   cursor: grab;
   color: var(--line-dark);
@@ -1745,7 +1714,6 @@ function extractTaskName(group) {
   const t = group.task || {};
   if (t.type === 'alfworld') return t.goal || t.task_type || 'ALFWorld task';
   if (t.type === 'spreadsheetbench') return (t.instruction || '').slice(0, 80) + ((t.instruction || '').length > 80 ? '...' : '');
-  if (t.type === 'wikitq') return t.question || 'WikiTQ task';
   if (t.type === 'searchqa') return t.question || 'SearchQA task';
   if (t.type === 'livemathc') return (t.question || 'LiveMathC task').slice(0, 80);
   if (t.type === 'docvqa') return t.question || 'DocVQA task';
@@ -1756,7 +1724,7 @@ function renderSidebar() {
   const sidebar = el('div', 'sidebar');
   const header = el('div', 'sidebar-header');
   header.appendChild(el('h1', '', 'Experiment Runs'));
-  const titleEl = el('div', 'title', 'PACT Board');
+  const titleEl = el('div', 'title', 'SKILL-KD Board');
   titleEl.style.cursor = 'pointer';
   titleEl.title = 'Back to Board';
   titleEl.onclick = () => goBoard();
@@ -1827,9 +1795,6 @@ function renderBoard() {
       sheetHard: null,
       sheetN: null,
       sheetSuccess: null,
-      wikitqSR: null,
-      wikitqN: null,
-      wikitqSuccess: null,
       searchqaEM: null,          searchqaF1: null,       searchqaSubEm: null,    searchqaN: null,
       searchqaSuccess: null,
       livemathcAcc: null,        livemathcN: null,
@@ -1838,7 +1803,6 @@ function renderBoard() {
       docvqaSuccess: null,
       evoAlfw:     { tasks: 0, success: 0, rounds: 0, ops: 0 },
       evoSheet:    { tasks: 0, success: 0, rounds: 0, ops: 0 },
-      evoWikitq:   { tasks: 0, success: 0, rounds: 0, ops: 0 },
       evoSearchqa: { tasks: 0, success: 0, rounds: 0, ops: 0 },
       evoLivemathc:{ tasks: 0, success: 0, rounds: 0, ops: 0 },
       evoDocvqa:   { tasks: 0, success: 0, rounds: 0, ops: 0 },
@@ -1849,7 +1813,6 @@ function renderBoard() {
     const ALFW_SEEN_SPLITS = new Set(['id_eval', 'test_seen']);
     const ALFW_UNSEEN_SPLITS = new Set(['ood_eval', 'test_unseen']);
     const SHEET_TEST_SPLITS = new Set(['id_eval', 'test']);
-    const WIKITQ_TEST_SPLITS = new Set(['ood_eval', 'test']);
     const GENERIC_TEST_SPLITS = new Set(['id_eval', 'ood_eval', 'test']);
 
     (run.summary || []).forEach(m => {
@@ -1873,11 +1836,6 @@ function renderBoard() {
         r.sheetSuccess = m.soft_restriction_mean;
         r.sheetN = m.num_tasks;
       }
-      if (bench === 'wikitq' && WIKITQ_TEST_SPLITS.has(split)) {
-        r.wikitqSR = m.success_rate;
-        r.wikitqSuccess = m.success_rate;
-        r.wikitqN = m.num_tasks;
-      }
       if (bench === 'searchqa' && GENERIC_TEST_SPLITS.has(split)) {
         r.searchqaEM = m.success_rate;            // SearchQA success == EM
         r.searchqaSuccess = m.success_rate;
@@ -1895,12 +1853,6 @@ function renderBoard() {
         r.docvqaHard = m.success_rate;            // hard = ANLS >= 0.999
         r.docvqaSuccess = m.success_rate;
         r.docvqaN = m.num_tasks;
-      }
-      // Legacy cross-eval (spreadsheet student evaluated on wikitq) — kept
-      // for back-compat with old runs; new runs no longer emit these.
-      if (target === 'wikitq' && typeof split === 'string' && split.includes('wikitq')) {
-        r.wikitqSR = m.success_rate;
-        r.wikitqN = m.num_tasks;
       }
     });
     // ALFWorld Avg: sample-level macro across seen + unseen.
@@ -1922,7 +1874,6 @@ function renderBoard() {
       };
       if (b.name === 'alfworld') r.evoAlfw = stat;
       else if (b.name === 'spreadsheetbench') r.evoSheet = stat;
-      else if (b.name === 'wikitq') r.evoWikitq = stat;
       else if (b.name === 'searchqa') r.evoSearchqa = stat;
       else if (b.name === 'livemathc') r.evoLivemathc = stat;
       else if (b.name === 'docvqa') r.evoDocvqa = stat;
@@ -2087,9 +2038,6 @@ function renderBoard() {
     { key: 'alfworldAvg',    label: 'Avg',              cls: '' },
     { key: 'alfworldSeen',   label: 'Seen',             cls: '' },
     { key: 'alfworldUnseen', label: 'Unseen',           cls: 'board-border-right' },
-    { key: 'evoWikitq',      label: 'WikiTQ Evol',      cls: '' },
-    { key: 'wikitqSuccess',  label: 'success(em)',      cls: '' },
-    { key: 'wikitqSR',       label: 'WikiTQ SR',        cls: '' },
   ];
   colMeta.forEach(c => {
     h2.appendChild(sortHeader(c.label, c.key, currentSort, c.cls));
@@ -2259,11 +2207,6 @@ function renderBoard() {
     tr.appendChild(pctCell(r.alfworldAvg,    r.alfworldTotalN));
     tr.appendChild(pctCell(r.alfworldSeen,   r.alfworldSeenN));
     tr.appendChild(pctCell(r.alfworldUnseen, r.alfworldUnseenN));
-
-    // WikiTQ: Evol → success(em) → SR
-    tr.appendChild(evolCell(r.evoWikitq));
-    tr.appendChild(pctCell(r.wikitqSuccess, r.wikitqN));
-    tr.appendChild(pctCell(r.wikitqSR, r.wikitqN));
 
     tbody.appendChild(tr);
   });
@@ -2819,8 +2762,6 @@ function renderGroup() {
     taskInfo.innerHTML = '<div class="label">Goal</div><div>' + (t.goal || '—') + '</div><div style="margin-top:12px;" class="label">Task Type</div><div>' + (t.task_type || '—') + ' | ' + (t.scene || '—') + '</div><div style="margin-top:12px;" class="label">Target</div><div>' + (t.pddl_target || '—') + ' → ' + (t.pddl_parent || '—') + '</div>';
   } else if (t.type === 'spreadsheetbench') {
     taskInfo.innerHTML = '<div class="label">Instruction</div><div>' + (t.instruction || '—') + '</div><div style="margin-top:12px;" class="label">Type</div><div>' + (t.instruction_type || '—') + ' | Answer: ' + (t.answer_position || '—') + '</div>';
-  } else if (t.type === 'wikitq') {
-    taskInfo.innerHTML = '<div class="label">Question</div><div>' + (t.question || '—') + '</div><div style="margin-top:12px;" class="label">Table</div><div>' + (t.table_id || '—') + '</div>';
   } else if (t.type === 'searchqa') {
     taskInfo.innerHTML = '<div class="label">Question</div><div>' + (t.question || '—') + '</div><div style="margin-top:12px;" class="label">Context (preview)</div><div style="white-space:pre-wrap;font-size:11px;color:var(--fg-secondary)">' + (t.context_preview || '—') + '</div>';
   } else if (t.type === 'livemathc') {
@@ -3314,7 +3255,6 @@ function renderTrajectoryInfo(traj, taskInfo, mode) {
   if (taskInfo) {
     if (taskInfo.type === 'alfworld') questionText = taskInfo.goal || taskInfo.task_type || '';
     else if (taskInfo.type === 'spreadsheetbench') questionText = taskInfo.instruction || '';
-    else if (taskInfo.type === 'wikitq') questionText = taskInfo.question || '';
     else if (taskInfo.type === 'searchqa') questionText = taskInfo.question || '';
     else if (taskInfo.type === 'livemathc') questionText = taskInfo.question || '';
     else if (taskInfo.type === 'docvqa') questionText = taskInfo.question || '';
@@ -3331,10 +3271,7 @@ function renderTrajectoryInfo(traj, taskInfo, mode) {
 
   // Ground Truth
   let gtText = '';
-  if (mode.includes('wikitq') || mode.includes('denotation')) {
-    const gold = evalData.gold || [];
-    gtText = gold.length > 0 ? gold.map(g => String(g)).join(', ') : '';
-  } else if (mode.includes('spreadsheet')) {
+  if (mode.includes('spreadsheet')) {
     const cases = evalData.cases || [];
     if (cases.length > 0 && cases[0].answer_preview) {
       gtText = cases[0].answer_preview;
@@ -3351,9 +3288,7 @@ function renderTrajectoryInfo(traj, taskInfo, mode) {
 
   // Answer
   let answerText = '';
-  if (mode.includes('wikitq') || mode.includes('denotation')) {
-    answerText = String(evalData.prediction || traj.final_answer || '');
-  } else if (mode.includes('spreadsheet')) {
+  if (mode.includes('spreadsheet')) {
     answerText = evalData.solution_code || traj.final_answer || '';
   } else if (traj.final_answer) {
     answerText = traj.final_answer;
@@ -3483,27 +3418,6 @@ function renderTrajectory(traj, opts) {
         return block;
       }));
     }
-    if (messages.length > 0) {
-      container.appendChild(collapsible(
-        'Raw messages',
-        messages.length + ' messages',
-        null,
-        () => renderMessages(messages, [], {imagePath: taskImagePath})
-      ));
-    }
-  }
-  // ── WikiTQ: prediction vs gold ──
-  else if (mode.includes('denotation') || mode.includes('wikitq')) {
-    const comp = el('div', 'pred-gold-comp');
-    const predDiv = el('div', '');
-    predDiv.innerHTML = '<div class="label">Prediction</div><div>' + escapeHtml(String(evalData.prediction || '—')) + '</div>';
-    comp.appendChild(predDiv);
-    const goldDiv = el('div', '');
-    const gold = evalData.gold || [];
-    goldDiv.innerHTML = '<div class="label">Gold (' + gold.length + ')</div><div>' + gold.map(g => escapeHtml(String(g))).join('<br>') + '</div>';
-    comp.appendChild(goldDiv);
-    container.appendChild(comp);
-
     if (messages.length > 0) {
       container.appendChild(collapsible(
         'Raw messages',
@@ -3780,7 +3694,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = HTTPServer(("0.0.0.0", PORT), Handler)
-    print(f"PACT Board serving at http://localhost:{PORT}")
+    print(f"SKILL-KD Board serving at http://localhost:{PORT}")
     print("Press Ctrl+C to stop.")
     try:
         server.serve_forever()

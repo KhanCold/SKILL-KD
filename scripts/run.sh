@@ -49,8 +49,8 @@
 #    TEACHER_MODEL=         # required for evolve/evolve+test
 #    SKILL=path/to/skill.md   # single file (all benchmarks) or run directory (per-benchmark auto-resolve)
 #    EXP_NAME=my_experiment
-#    PACT_API_KEY_ENV=DASHSCOPE_API_KEY
-#    PACT_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+#    SKILL_KD_API_KEY_ENV=DASHSCOPE_API_KEY
+#    SKILL_KD_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 #
 # ============================================================================
 set -euo pipefail
@@ -88,7 +88,7 @@ if [[ -z "${BENCHMARKS+x}" ]]; then
 fi
 TRAIN_LIMIT="${TRAIN_LIMIT:-}"
 EVAL_LIMIT="${EVAL_LIMIT:-}"
-MAX_ITERS="${PACT_MAX_ITERS:-${MAX_ITERS:-3}}"
+MAX_ITERS="${SKILL_KD_MAX_ITERS:-${MAX_ITERS:-3}}"
 STUDENT_MODEL="${STUDENT_MODEL:-qwen3-8b}"
 # Teacher is only meaningful in evolve / evolve+test. Leave it empty in test mode
 # so it isn't passed to the runner — otherwise run_id and run_config.json would
@@ -97,8 +97,8 @@ if [[ -z "${TEACHER_MODEL:-}" && "${MODE}" != "test" ]]; then
   TEACHER_MODEL="qwen3.5-flash"
 fi
 TEACHER_MODEL="${TEACHER_MODEL:-}"
-API_KEY_ENV="${PACT_API_KEY_ENV:-DASHSCOPE_API_KEY}"
-BASE_URL="${PACT_BASE_URL:-${OPENAI_BASE_URL:-${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}}}"
+API_KEY_ENV="${SKILL_KD_API_KEY_ENV:-DASHSCOPE_API_KEY}"
+BASE_URL="${SKILL_KD_BASE_URL:-${OPENAI_BASE_URL:-${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}}}"
 STUDENT_BASE_URL="${STUDENT_BASE_URL:-}"
 TEACHER_BASE_URL="${TEACHER_BASE_URL:-}"
 EXP_NAME="${EXP_NAME:-}"

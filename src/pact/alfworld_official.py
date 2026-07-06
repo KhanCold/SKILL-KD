@@ -103,7 +103,7 @@ def run_interactive_alfworld_rollout(
     env_steps: list[dict[str, Any]] = []
     actions: list[str] = []
     stop_reason: str | None = None
-    repeat_action_limit = int(os.environ.get("PACT_ALFWORLD_REPEAT_ACTION_LIMIT", "5"))
+    repeat_action_limit = int(os.environ.get("SKILL_KD_ALFWORLD_REPEAT_ACTION_LIMIT", "5"))
 
     for _ in range(max_steps):
         admissible = list(infos.get("admissible_commands", [[]])[0])
