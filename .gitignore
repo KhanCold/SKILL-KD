@@ -11,13 +11,13 @@ external/
 logs/
 
 results/*
-!results/4b-final_20260704_154926/
-results/4b-final_20260704_154926/*
-!results/4b-final_20260704_154926/*/
-results/4b-final_20260704_154926/*/*
-!results/4b-final_20260704_154926/*/skills/
-results/4b-final_20260704_154926/*/skills/*
-!results/4b-final_20260704_154926/*/skills/final.md
+!results/4b-skills/
+results/4b-skills/*
+!results/4b-skills/*/
+results/4b-skills/*/*
+!results/4b-skills/*/skills/
+results/4b-skills/*/skills/*
+!results/4b-skills/*/skills/final.md
 
 !.gitkeep
 

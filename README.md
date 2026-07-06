@@ -79,7 +79,7 @@ full experiment trajectories, metrics, or raw outputs. It only keeps the final
 4B skill snapshots at:
 
 ```text
-results/4b-final_20260704_154926/<benchmark>/skills/final.md
+results/4b-skills/<benchmark>/skills/final.md
 ```
 
 To inspect newly generated results:
