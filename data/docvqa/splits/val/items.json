@@ -1,0 +1,373 @@
+[
+  {
+    "id": "62409",
+    "questionId": "62409",
+    "docId": "8554",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "50961",
+    "questionId": "50961",
+    "docId": "549",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "46461",
+    "questionId": "46461",
+    "docId": "13361",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "3041",
+    "questionId": "3041",
+    "docId": "1204",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "41716",
+    "questionId": "41716",
+    "docId": "11835",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "61123",
+    "questionId": "61123",
+    "docId": "7374",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "43068",
+    "questionId": "43068",
+    "docId": "12393",
+    "topic": "figure/diagram",
+    "source_split": "validation"
+  },
+  {
+    "id": "51221",
+    "questionId": "51221",
+    "docId": "764",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "6397",
+    "questionId": "6397",
+    "docId": "2242",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "57428",
+    "questionId": "57428",
+    "docId": "4779",
+    "topic": "Image/Photo",
+    "source_split": "validation"
+  },
+  {
+    "id": "3135",
+    "questionId": "3135",
+    "docId": "1221",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "18819",
+    "questionId": "18819",
+    "docId": "5749",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "15382",
+    "questionId": "15382",
+    "docId": "4890",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "5772",
+    "questionId": "5772",
+    "docId": "1940",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "49077",
+    "questionId": "49077",
+    "docId": "14179",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "58519",
+    "questionId": "58519",
+    "docId": "5347",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "50720",
+    "questionId": "50720",
+    "docId": "281",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "56785",
+    "questionId": "56785",
+    "docId": "14289",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "59653",
+    "questionId": "59653",
+    "docId": "6579",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "61791",
+    "questionId": "61791",
+    "docId": "8072",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "37229",
+    "questionId": "37229",
+    "docId": "10742",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "60407",
+    "questionId": "60407",
+    "docId": "7135",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "64420",
+    "questionId": "64420",
+    "docId": "10230",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "47365",
+    "questionId": "47365",
+    "docId": "13813",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "47458",
+    "questionId": "47458",
+    "docId": "13639",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "7621",
+    "questionId": "7621",
+    "docId": "2668",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "53575",
+    "questionId": "53575",
+    "docId": "2766",
+    "topic": "free_text|table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "60913",
+    "questionId": "60913",
+    "docId": "7349",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "60454",
+    "questionId": "60454",
+    "docId": "7163",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "57978",
+    "questionId": "57978",
+    "docId": "4920",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "64547",
+    "questionId": "64547",
+    "docId": "10361",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "59481",
+    "questionId": "59481",
+    "docId": "6243",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "61472",
+    "questionId": "61472",
+    "docId": "7757",
+    "topic": "handwritten|table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "5673",
+    "questionId": "5673",
+    "docId": "1908",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "49109",
+    "questionId": "49109",
+    "docId": "13644",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "46123",
+    "questionId": "46123",
+    "docId": "13503",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "48158",
+    "questionId": "48158",
+    "docId": "13976",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "1955",
+    "questionId": "1955",
+    "docId": "892",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "8127",
+    "questionId": "8127",
+    "docId": "2754",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "57431",
+    "questionId": "57431",
+    "docId": "4779",
+    "topic": "Image/Photo",
+    "source_split": "validation"
+  },
+  {
+    "id": "64306",
+    "questionId": "64306",
+    "docId": "10149",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "64887",
+    "questionId": "64887",
+    "docId": "9754",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "58680",
+    "questionId": "58680",
+    "docId": "5545",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "5287",
+    "questionId": "5287",
+    "docId": "1785",
+    "topic": "form",
+    "source_split": "validation"
+  },
+  {
+    "id": "55471",
+    "questionId": "55471",
+    "docId": "4340",
+    "topic": "free_text",
+    "source_split": "validation"
+  },
+  {
+    "id": "53095",
+    "questionId": "53095",
+    "docId": "296",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "53726",
+    "questionId": "53726",
+    "docId": "2008",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "57321",
+    "questionId": "57321",
+    "docId": "4722",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "26659",
+    "questionId": "26659",
+    "docId": "7470",
+    "topic": "layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "38920",
+    "questionId": "38920",
+    "docId": "11157",
+    "topic": "table/list|layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "50837",
+    "questionId": "50837",
+    "docId": "14742",
+    "topic": "table/list",
+    "source_split": "validation"
+  },
+  {
+    "id": "59615",
+    "questionId": "59615",
+    "docId": "6569",
+    "topic": "handwritten|table/list|layout",
+    "source_split": "validation"
+  },
+  {
+    "id": "58687",
+    "questionId": "58687",
+    "docId": "5545",
+    "topic": "table/list",
+    "source_split": "validation"
+  }
+]

@@ -7,6 +7,13 @@ __pycache__/
 *.egg-info/
 
 data/*
+!data/*/
+data/*/*
+!data/*/splits/
+data/*/splits/*
+!data/*/splits/*/
+data/*/splits/*/*
+!data/*/splits/*/items.json
 external/
 logs/
 
@@ -18,6 +25,13 @@ results/4b-skills/*/*
 !results/4b-skills/*/skills/
 results/4b-skills/*/skills/*
 !results/4b-skills/*/skills/final.md
+!results/35b-skills/
+results/35b-skills/*
+!results/35b-skills/*/
+results/35b-skills/*/*
+!results/35b-skills/*/skills/
+results/35b-skills/*/skills/*
+!results/35b-skills/*/skills/final.md
 
 !.gitkeep
 

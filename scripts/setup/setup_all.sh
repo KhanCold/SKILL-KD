@@ -33,7 +33,7 @@ if [[ ! -x "${VENV}/bin/python" ]]; then
   "${VENV}/bin/pip" install -U pip wheel setuptools
 fi
 
-echo "[pip] installing coevolve[alfworld,dev]"
+echo "[pip] installing skill-kd[alfworld,dev]"
 "${VENV}/bin/pip" install -e '.[alfworld,dev]'
 
 if [[ -z "${SKIP_SSB:-}" ]]; then

@@ -20,6 +20,10 @@ cp .env.example .env
 Set `DASHSCOPE_API_KEY` in `.env`, or configure any OpenAI-compatible endpoint
 with `SKILL_KD_BASE_URL` and `SKILL_KD_API_KEY_ENV`.
 
+The setup scripts download public benchmark data and materialize the exact
+train/validation/test subsets from pinned manifests checked into
+`data/<benchmark>/splits/`.
+
 Skip individual benchmark preparation with:
 `SKIP_ALF=1`, `SKIP_SSB=1`, `SKIP_SEARCHQA=1`, `SKIP_LIVEMATHC=1`,
 or `SKIP_DOCVQA=1`.
@@ -71,15 +75,18 @@ Important environment variables:
 | `TRAIN_LIMIT` | all | Optional training subsample |
 | `EVAL_LIMIT` | all | Optional eval subsample |
 | `MAX_ITERS` | `3` | Max adaptive skill-edit rounds per task |
+| `SKILL_KD_BASE_URL` | DashScope | OpenAI-compatible endpoint |
+| `SKILL_KD_API_KEY_ENV` | `DASHSCOPE_API_KEY` | Env var holding the API key |
 
 ## Results
 
 Runs are written to `results/<run_id>/`. This source release does not include
-full experiment trajectories, metrics, or raw outputs. It only keeps the final
-4B skill snapshots at:
+full experiment trajectories, metrics, or raw outputs. It keeps final skill
+snapshots at:
 
 ```text
 results/4b-skills/<benchmark>/skills/final.md
+results/35b-skills/<benchmark>/skills/final.md
 ```
 
 To inspect newly generated results:
