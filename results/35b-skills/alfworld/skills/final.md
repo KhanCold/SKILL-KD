@@ -1,0 +1,3 @@
+[RULE 001] State Change Before Placement
+content: When a task requires changing an object's state before placing it, do search accessible locations and open closed containers until you find an item matching the requested type or category rather than a merely related candidate, pick it up, apply the required state-changing action with the appropriate fixture, move it to the requested receptacle, and if the task does not complete, repeat the search-state-placement sequence with another more task-matching candidate instead of idling.
+why: The failing rollout chose a related pan, placed it, then idled after the task remained incomplete, while the succeeding rollout searched further, selected the task-valid pot, cooled it, and placed it successfully.
