@@ -1,19 +1,15 @@
 [RULE 001] Roman numeral normalization
-content: When a question asks for a number or number abbreviation and the source shows a Roman numeral, do answer with the equivalent Arabic numeral only.
-why: The failing rollouts returned the visible Roman numeral or its full label, while the expected answer normalized it to the Arabic numeral alone.
+content: When a question asks for a number and the source shows a Roman numeral, do return the equivalent Arabic numeral without surrounding labels.
+why: The failing rollouts returned the Roman numeral or its label from the document, while the expected answer normalized it to the Arabic numeral alone.
 
-[RULE 002] Straight quote transcription
-content: When transcribing quoted text from a document for an answer, do use straight double quotation marks instead of curly or single quotation marks.
-why: The failing rollouts used single or curly quotation marks around the phrase, while the succeeding target expected straight double quotation marks.
+[RULE 002] Labeled value scope
+content: When a question asks for a labeled field value or a specific component within one, do return only the requested complete component or value directly associated with that label, preserving visible symbols such as currency signs, joining currency symbols to their numbers when they are separated only by form layout spacing, and not including other components or neighboring separately labeled fields unless the question asks for them.
+why: Earlier failures either appended neighboring fields or omitted visible symbols, while this failing rollout correctly found the amount but inserted a space between the currency symbol and number; the succeeding rollout returned the currency amount with the symbol joined to the number.
 
-[RULE 003] Ambiguous organization spelling
-content: When answering with an organization name that appears as a visually ambiguous near-miss of a well-known name, do correct the ambiguous letters to the recognized spelling while preserving the document's visible word breaks.
-why: The failing rollout transcribed the ambiguous misspelling, while a retry over-normalized to the merged brand form; the expected answer corrected the letter but kept the document's spacing.
+[RULE 003] Low-legibility character verification
+content: When the requested answer appears in low-legibility handwriting or a skewed annotation, do recheck each character by its visible strokes and distinguish visually similar digits or letters before answering.
+why: The failing rollouts returned the correctly scoped label value but misread the low-legibility exhibit number as 20, while the succeeding rollout inspected the annotation and returned 70.
 
-[RULE 004] Advertised provider brand only
-content: When a question asks which provider is advertised and the document shows a distinctive brand beside generic service descriptors or location text, do answer with only the distinctive brand name.
-why: The failing rollouts included the generic service descriptor and location after the brand, while the expected answer used only the advertised brand.
-
-[RULE 005] Currency symbol preservation
-content: When answering with a monetary amount and the document shows a currency symbol with that amount, do include the currency symbol in the answer.
-why: The failing rollout returned only the numeric amount, while the succeeding rollout preserved the visible dollar sign expected by the benchmark.
+[RULE 004] Complete type phrases
+content: When a question asks what kind or type something is and the source shows a multi-word type phrase, do return the complete phrase including the head noun rather than only a modifier.
+why: The failing rollout identified the visible phrase but answered only its modifier, while the succeeding rollout returned the full type phrase.
