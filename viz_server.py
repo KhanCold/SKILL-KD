@@ -1586,6 +1586,11 @@ body {
 </div>
 
 <script>
+// Auto-detect base path for reverse-proxy setups (e.g. Jupyter proxy at /proxy/9000/).
+// When served from root "/" this is ""; when served from a sub-path it strips the
+// trailing segment so API calls like "/data" resolve correctly under the proxy prefix.
+const BASE = window.location.pathname.replace(/\/[^/]*$/, '') || '';
+
 let DATA = [];
 let groupDetailLoading = {};
 let evalTaskDetailLoading = {};
@@ -1640,7 +1645,7 @@ function loadGroupDetail(runIdx, benchIdx, groupIdx) {
   const key = run.id + '/' + bench.name + '/' + group.id;
   if (groupDetailLoading[key]) return;
   groupDetailLoading[key] = true;
-  fetchJson('/group?' + detailParams(run, bench, {group: group.id}))
+  fetchJson(BASE + '/group?' + detailParams(run, bench, {group: group.id}))
     .then(detail => {
       DATA[runIdx].benchmarks[benchIdx].groups[groupIdx] = Object.assign({}, group, detail, {_detailLoaded: true});
       if (state.view === 'group' && state.selectedRun === runIdx && state.selectedBench === benchIdx && state.selectedGroup === groupIdx) render();
@@ -1661,7 +1666,7 @@ function loadEvalTaskDetail(runIdx, benchIdx, splitName, taskIdx) {
   const key = run.id + '/' + bench.name + '/' + splitName + '/' + taskIdx;
   if (evalTaskDetailLoading[key]) return;
   evalTaskDetailLoading[key] = true;
-  fetchJson('/eval-task?' + detailParams(run, bench, {split: splitName, index: taskIdx}))
+  fetchJson(BASE + '/eval-task?' + detailParams(run, bench, {split: splitName, index: taskIdx}))
     .then(detail => {
       DATA[runIdx].benchmarks[benchIdx].evaluation[splitName].tasks[taskIdx] = Object.assign({}, task, detail, {_detailLoaded: true});
       if (state.view === 'eval_task' && state.selectedRun === runIdx && state.selectedBench === benchIdx && state.selectedSplit === splitName && state.selectedEvalTask === taskIdx) render();
@@ -2769,7 +2774,7 @@ function renderGroup() {
     taskInfo.innerHTML = '<div class="label">Question</div><div>' + (t.question || '—') + '</div><div style="margin-top:12px;" class="label">Month / Theorem Type</div><div>' + (t.month || '—') + ' · ' + (tt || '—') + ' · correct=' + (t.correct_label || '—') + '</div>';
   } else if (t.type === 'docvqa') {
     const imgBlock = t.image_path
-      ? '<img src="/image?path=' + encodeURIComponent(t.image_path) + '" alt="document" loading="lazy" style="max-width:100%;max-height:520px;border:1px solid var(--line);display:block;margin-top:6px;background:#fff;">'
+      ? '<img src="' + BASE + '/image?path=' + encodeURIComponent(t.image_path) + '" alt="document" loading="lazy" style="max-width:100%;max-height:520px;border:1px solid var(--line);display:block;margin-top:6px;background:#fff;">'
       : '<div style="color:var(--fg-secondary)">—</div>';
     taskInfo.innerHTML =
       '<div class="label">Question</div><div>' + (t.question || '—') + '</div>' +
@@ -3193,7 +3198,7 @@ function renderMessages(messages, envSteps, opts) {
           } else if (iu && typeof iu === 'object' && typeof iu.url === 'string') {
             src = iu.url;
           } else if (imagePath) {
-            src = '/image?path=' + encodeURIComponent(imagePath);
+            src = BASE + '/image?path=' + encodeURIComponent(imagePath);
           }
           if (src) {
             const img = el('img', '');
@@ -3548,7 +3553,7 @@ function render() {
 
 async function loadData() {
   try {
-    const res = await fetch('/data');
+    const res = await fetch(BASE + '/data');
     DATA = await res.json();
     render();
   } catch (e) {
