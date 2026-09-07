@@ -1,17 +1,47 @@
-# SKILL-KD
+<div align="center">
 
-Code for **SKILL-KD: Contrastive Skill Distillation for LLM Agents**.
+<h1>SKILL-KD</h1>
 
-SKILL-KD improves frozen student agents by converting teacher-student behavioral
-gaps into reusable textual skills. For each benchmark, a student and teacher
-share a `skill.md`; when the student fails, the teacher runs the same task, a
-critic proposes skill edits, and the student retries with the patched skill.
+<p><strong>Contrastive Skill Distillation for LLM Agents</strong></p>
+
+<p>
+  <a href="https://arxiv.org/abs/2607.28048"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2607.28048-b31b1b?logo=arxiv&logoColor=white"></a>
+  <img alt="Python 3.9+" src="https://img.shields.io/badge/Python-3.9%2B-3776ab?logo=python&logoColor=white">
+</p>
+
+<p>
+  <a href="#abstract">Abstract</a> |
+  <a href="#overview">Overview</a> |
+  <a href="#setup">Setup</a> |
+  <a href="#benchmarks">Benchmarks</a> |
+  <a href="#run">Run</a> |
+  <a href="#citation">Citation</a>
+</p>
+
+</div>
+
+## Abstract
+
+Skill-based prompting has become a practical mechanism for improving large language model (LLM) agents, yet existing skill acquisition methods often treat skills as experience summaries, memory entries, or direct summaries of successful demonstrations.
+This creates a mismatch for weaker student agents: when a student fails because it lacks task knowledge or operational strategy, its failed trajectory may not contain enough evidence to infer the missing behavior, while the teacher trajectory may be too implicit to be internalized as reusable guidance.
+We propose **SKILL-KD**, a contrastive skill distillation framework that treats skills as an explicit distillation medium between agents of different capabilities.
+Given a student failure and the teacher trajectory on the same task, SKILL-KD distills their actionable discrepancy into a textual skill patch, evaluates the patch by re-running the student, and iteratively refines the patch when the student still fails.
+To prevent repeated local updates from causing skill drift, SKILL-KD further maintains trace-linked edit histories and performs **Drift-Aware Skill Consolidation**, deciding whether each patch should add a new rule, delete or modify an existing rule, or be skipped.
+Across five agent benchmarks and two student settings, SKILL-KD consistently improves frozen student agents over fixed-model adaptation baselines.
+
+## Overview
+
+<p align="center">
+  <img src="assets/method.png" alt="SKILL-KD overview: contrastive skill distillation, drift-aware skill consolidation, and adaptive student retries over a shared skill library" width="1000">
+</p>
+
+<p align="center"><em>SKILL-KD distills teacher-student behavioral gaps into reusable skills through adaptive student retries and drift-aware skill consolidation.</em></p>
 
 ## Setup
 
 ```bash
 brew install python@3.11
-brew install --cask libreoffice          # SpreadsheetBench formula recalculation
+brew install --cask libreoffice
 
 bash scripts/setup/setup_all.sh
 cp .env.example .env
@@ -114,3 +144,17 @@ pytest -q
 ```
 
 Tests mock LLM calls and do not require network access.
+
+## Citation
+
+```bibtex
+@misc{shi2026skillkdcontrastiveskilldistillation,
+  title={SKILL-KD: Contrastive Skill Distillation for LLM Agents},
+  author={Qiming Shi and Yibo Dou and Jiawen Zhu and Yulong Tao and Linbo Jin and Zhaolu Kang and Yunfan Zhou and Di Weng},
+  year={2026},
+  eprint={2607.28048},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2607.28048},
+}
+```
